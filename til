@@ -1,0 +1,127 @@
+#!/usr/bin/env ruby
+require 'optparse'
+require 'fileutils'
+
+Version = '0.1.0'
+def ask(message)
+  print message
+  ok = nil
+
+  until ok
+    input = gets.strip
+    case input
+      when /^(https|http):\/\/.+$/
+        ok = true
+        yield :c1, input
+      when /^([nN]o?$|\n$)/ #n or no
+        ok = true
+        yield :c2
+      else
+        ok = false
+    end
+  end
+end
+
+allowed_options = {
+    '-d' => ['have_arg', '--directory', 'Working directory', 'dir'],
+    '--directory' => ['have_arg'],
+    '-c' => ['no_arg', '--category', 'Topic category', 'cat'],
+    '--category' => ['no_arg']
+}
+
+argv = ARGV.select.with_index do |opt, idx|
+  if opt =~ /^\w+.*$/
+    next true
+  end
+
+  if opt =~ /^--.*=.*$/
+    opt, _ = opt.split('=')
+  end
+
+  if allowed_options.keys.include? opt
+    if allowed_options[opt][0] == 'have_arg'
+      if ARGV.size == idx+2 && ARGV[idx+1] =~ /^\w+.*$/
+        next true
+      elsif ARGV.size == idx + 1 && ARGV[idx] =~ /^--.*=.+$/
+        next true
+      end
+    else
+      next true
+    end
+  end
+
+  next false
+end
+
+options = {}
+OptionParser.new do |opts|
+  track = []
+  opts.banner = 'Usage: til [OPTIONS] TOPIC-NAME'
+
+  allowed_options.keys.each do |opt, idx|
+    if track.include? opt
+      next
+    end
+
+    if allowed_options[opt].size == 4
+      opts.on(opt, "#{allowed_options[opt][1]} [#{allowed_options[opt][3]}]", allowed_options[opt][2]) do |v|
+        options[allowed_options[opt][3]] = v
+      end
+    end
+  end
+end.parse!
+
+if ARGV.size == 0
+  print "Missing topic argument (Try --help to know more)\n"
+  exit 0
+end
+
+topic = ARGV.shift
+
+category = options.include?('cat') ? options['cat'] : 'misc'
+path = options.include?('dir') ? options['dir'] : Dir.pwd
+
+unless Dir.exist? File.join(path, category)
+  FileUtils.mkdir_p File.join(path, category)
+end
+
+
+Dir.chdir path do
+  unless system 'git rev-parse --git-dir > /dev/null 2>&1'
+    system 'git init'
+
+    ask 'Would you like to set remote url? [enter remote url or left empty]: ' do |c, arg|
+      if c == :c1
+        'Adding remote...'
+        system "git remote add origin #{arg.chomp}"
+      end
+    end
+  end
+
+  topic_exist = false
+
+  Dir.chdir category do
+    file_name = "#{topic.gsub(/\s/, '_')}.md"
+
+    unless File.exist? file_name
+      File.open file_name, 'w' do |file|
+        file.puts("# #{topic}")
+        file.puts("\n")
+      end
+    else
+      topic_exist = true
+    end
+
+    system "vim +2 #{file_name}"
+  end
+
+  system 'git add .'
+
+  if topic_exist
+    commit_msg = "Update topic \"#{topic}\""
+  else
+    commit_msg = "Add topic \"#{topic}\""
+  end
+
+  system "git commit -m '#{commit_msg}'"
+end
