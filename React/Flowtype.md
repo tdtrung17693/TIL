@@ -1,0 +1,3 @@
+# Flowtype
+
+* Using `flow-typed`
