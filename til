@@ -112,7 +112,7 @@ Dir.chdir path do
       topic_exist = true
     end
 
-    system "vim +2 #{file_name}"
+    system "vim", "+2", "#{file_name}"
   end
 
   system 'git add .'
