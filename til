@@ -26,7 +26,8 @@ allowed_options = {
     '-d' => ['have_arg', '--directory', 'Working directory', 'dir'],
     '--directory' => ['have_arg'],
     '-c' => ['no_arg', '--category', 'Topic category', 'cat'],
-    '--category' => ['no_arg']
+    '--category' => ['no_arg'],
+    '--list-cat' => ['no_arg', nil, nil, 'lscat'],
 }
 
 argv = ARGV.select.with_index do |opt, idx|
@@ -71,6 +72,20 @@ OptionParser.new do |opts|
   end
 end.parse!
 
+path = options.include?('dir') ? options['dir'] : Dir.pwd
+
+if options.include?('lscat')
+  if Dir.exist? path
+      Dir.entries( path ).each do | f |
+        if File.directory?(f) && f != '.' && f != '..' && f[0] != '.' then
+          puts f
+        end
+      end
+  end
+
+  exit
+end
+
 if ARGV.size == 0
   print "Missing topic argument (Try --help to know more)\n"
   exit 0
@@ -79,7 +94,6 @@ end
 topic = ARGV.shift
 
 category = options.include?('cat') ? options['cat'] : 'misc'
-path = options.include?('dir') ? options['dir'] : Dir.pwd
 
 unless Dir.exist? File.join(path, category)
   FileUtils.mkdir_p File.join(path, category)
