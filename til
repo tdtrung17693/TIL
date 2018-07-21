@@ -77,7 +77,7 @@ path = options.include?('dir') ? options['dir'] : Dir.pwd
 if options.include?('lscat')
   if Dir.exist? path
       Dir.entries( path ).each do | f |
-        if File.directory?(f) && f != '.' && f != '..' && f[0] != '.' then
+        if File.directory?("#{path}/#{f}") && f != '.' && f != '..' && f[0] != '.' then
           puts f
         end
       end
