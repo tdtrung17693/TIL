@@ -8,4 +8,5 @@
 
 > keeping all the data and functions operating on the data related to a composite data type together within an abstraction barrie
 
+* __Data Hiding__: Some mechanism to protect the abstraction barrier from being broken.
 
