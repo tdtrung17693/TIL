@@ -86,6 +86,7 @@ if options.include?('lscat')
   exit
 end
 
+
 if ARGV.size == 0
   print "Missing topic argument (Try --help to know more)\n"
   exit 0
