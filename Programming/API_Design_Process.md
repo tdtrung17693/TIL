@@ -8,7 +8,7 @@
 
 + Make decision about versioning, licensing, authentication, .etc..
 
-## Process
+## 3. Process
 
 1. Start with a short specs.
 2. Solicit feedback
