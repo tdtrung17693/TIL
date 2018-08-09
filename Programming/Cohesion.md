@@ -1,5 +1,9 @@
 # Cohesion
 
+    Degree to which members of a class serve a unifying task or concept
+
+    Abstractions and design should allow related methods and fields to be together
+
     High cohesion is when a class that does a well defined job. Low cohesion is when a class does a lot of jobs that don't have much in common.
 
 ### Different types of Cohesion:
