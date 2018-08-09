@@ -1,14 +1,14 @@
 # API Design Process
 
-__1. What is the goal?__
+## 1. What is the goal?
 
 + Make decision about languages, protocols, platform, formats, .etc..
 
-__2. Who is the customer?__
+## 2. Who is the customer?
 
 + Make decision about versioning, licensing, authentication, .etc..
 
-__3. Process__
+## Process
 
 1. Start with a short specs.
 2. Solicit feedback

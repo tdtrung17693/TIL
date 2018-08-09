@@ -14,7 +14,6 @@
 __z.B__: 
 
 |                        | `getPaidUsersAndSortByName()`                  |
-|------------------------|------------------------------------------------|
 | Do one thing           | `getUsers(isPaid: boolean, sortIndex: number)` |
 | Never expose internals | `getUsers(isPaid: boolean, key: Users.KEY)`    |
 | As small as possible   | `getUsers(isPaid: boolean)`                    |
