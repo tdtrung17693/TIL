@@ -69,8 +69,10 @@ setLifes(lifes: number) {
         .text(this.lifes)
 }
 ```
+
 * Coincidental Cohesion
-    - Functionality arbitrarily grouped
+    - Functionality arbitrarily grouped together
+    - Hard to understand and reuse
     - Lack of any cohesion at all
 
 ----
