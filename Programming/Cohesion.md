@@ -2,7 +2,8 @@
 
 Better -> Worst
 
-* Functional Cohesion
+* Functional Cohesion:
+
 * Sequential Cohesion
 * Communicational Cohesion
 * Procedural Cohesion
