@@ -6,6 +6,9 @@
 * Frequently used builtin layout managers: `QHBoxLayout`, `QVBoxLayout`, `QGridLayout`, `QFormLayout`. They inherit from `QLayout`.
 * Layout managers can be nested inside each other.
 * Layout can be set using `QWidget::setLayout()`.
+* Size hint: the preferred size of the widget, layouts will try to keep it as close to this as possible.
+* Size policy: how the size may change when the preferred size cannot be used (stretch or shrink).
+* Size constraint: maximum and minimum size.
 
 ## Adding Widgets to a Layout
 
