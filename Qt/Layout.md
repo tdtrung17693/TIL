@@ -44,3 +44,5 @@ Following properties and methods have to define:
 * `itemAt()` to iterate over the layout.
 * `takeAt()` to remove items from the layout.
 * `minimumSize()`
+
+[Example](http://doc.qt.io/qt-5/layout.html#the-header-file-card-op-op-h)
