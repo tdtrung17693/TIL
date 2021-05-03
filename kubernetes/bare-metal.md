@@ -1,7 +1,72 @@
 # Deploy a K8s cluster on bare-metal server
 
-## Install Prerequisites on ALL (Worker and Master) Nodes
-Let's remove any old versions of Docker if they exist:
+## Letting iptables see bridged traffic
+
+
+```shell
+cat <<EOF | sudo tee /etc/modules-load.d/k8s.conf
+br_netfilter
+EOF
+
+cat <<EOF | sudo tee /etc/sysctl.d/k8s.conf
+net.bridge.bridge-nf-call-ip6tables = 1
+net.bridge.bridge-nf-call-iptables  = 1
+EOF
+sudo sysctl --system
+```
+
+## Check firewall for allowing necessary ports
+
+__Control-plane node(s)__: 6443 (overridable), 2379-2380, 10250, 10251, 10252
+__Worker node(s)__: 10250, 30000-32767 (node port range, overridable)
+
+## Install Container Runtime (CRI-compatible) on ALL (Worker and Master) Nodes
+
+Common runtimes:
+- Docker
+- containerd
+- CRI-O
+
+Container runtime is specified at initialization time. If a runtime is not specified,
+**kubeadm** will automatically tries to detect an installed container runtime by scanning through a list of well known Unix domain sockets.
+
+### Install containerd
+
+Configure prerequisites:
+
+```shell
+cat <<EOF | sudo tee /etc/modules-load.d/containerd.conf
+overlay
+EOF
+
+sudo modprobe overlay
+sudo modprobe br_netfilter
+
+# Setup required sysctl params, these persist across reboots.
+cat <<EOF | sudo tee /etc/sysctl.d/99-kubernetes-cri.conf
+net.ipv4.ip_forward                 = 1
+EOF
+
+# Apply sysctl params without reboot
+sudo sysctl --system
+```
+
+Installation steps:
+
+1. Install the containerd.io package from the official Docker repositories. Instructions for setting up the Docker repository for your respective Linux distribution and installing the containerd.io package can be found at Install Docker Engine.
+
+2. Configure containerd:
+
+```shell
+sudo mkdir -p /etc/containerd
+containerd config default | sudo tee /etc/containerd/config.toml
+```
+
+3. Restart containerd:
+
+```shell
+sudo systemctl restart containerd
+```
 
 ```shell
 sudo yum remove docker \
@@ -26,24 +91,6 @@ And pop it into the PATH:
 
 `sudo mv ./kubectl /usr/local/bin/kubectl`
 
-## Letting iptables see bridged traffic
-
-```shell
-cat <<EOF | sudo tee /etc/modules-load.d/k8s.conf
-br_netfilter
-EOF
-
-cat <<EOF | sudo tee /etc/sysctl.d/k8s.conf
-net.bridge.bridge-nf-call-ip6tables = 1
-net.bridge.bridge-nf-call-iptables = 1
-EOF
-sudo sysctl --system
-```
-
-## Check firewall for allowing necessary ports
-
-__Control-plane node(s)__: 6443 (overridable), 2379-2380, 10250, 10251, 10252
-__Worker node(s)__: 10250, 30000-32767 (node port range, overridable)
 
 ## Install kubelet and kubeadm on ALL (Worker and Master) Nodes
 This is straight from https://kubernetes.io/docs/setup/independent/install-kubeadm/
