@@ -186,6 +186,8 @@ sudo firewall-cmd --permanent --add-port=8472/udp
 sudo firewall-cmd --add-masquerade --permanent
 ```
 
+Read more: https://github.com/flannel-io/flannel/blob/master/Documentation/troubleshooting.md
+
 ### Install
 We need to install the pod network before the cluster can come up. As such we want to install the latest yaml file that flannel provides. Most installations will use the following:
 
