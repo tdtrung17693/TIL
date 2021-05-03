@@ -21,6 +21,7 @@ __Control-plane node(s)__: 6443 (overridable), 2379-2380, 10250, 10251, 10252
 __Worker node(s)__: 10250, 30000-32767 (node port range, overridable)
 
 ## Install Container Runtime (CRI-compatible) on ALL (Worker and Master) Nodes
+Read more: https://kubernetes.io/docs/setup/production-environment/container-runtimes/
 
 Common runtimes:
 - Docker
@@ -75,11 +76,24 @@ sudo yum remove docker \
                   docker-engine
 ```
 
-And let's (re)install a fresh copy of Docker:
+4. Setup Cgroup driver:
+To use the systemd cgroup driver in `/etc/containerd/config.toml` with **runc**, set
 
-`yum install docker`
+```toml
+[plugins."io.containerd.grpc.v1.cri".containerd.runtimes.runc]
+  ...
+  [plugins."io.containerd.grpc.v1.cri".containerd.runtimes.runc.options]
+    SystemdCgroup = true
+```    
 
-We will also need to install the latest release of kubectl, which is used to control Kubernetes. The instructions are straight from https://kubernetes.io/docs/tasks/tools/install-kubectl/
+```shell
+# Restart service
+sudo systemctl restart containerd
+```
+
+## Install kubectl
+
+Read more: https://kubernetes.io/docs/tasks/tools/install-kubectl/
 
 `curl -LO https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl`
 
@@ -96,22 +110,25 @@ And pop it into the PATH:
 This is straight from https://kubernetes.io/docs/setup/independent/install-kubeadm/
 
 ```shell
-sudo cat <<EOF > /etc/yum.repos.d/kubernetes.repo
+cat <<EOF | sudo tee /etc/yum.repos.d/kubernetes.repo
 [kubernetes]
 name=Kubernetes
-baseurl=https://packages.cloud.google.com/yum/repos/kubernetes-el7-x86_64
+baseurl=https://packages.cloud.google.com/yum/repos/kubernetes-el7-\$basearch
 enabled=1
 gpgcheck=1
 repo_gpgcheck=1
-gpgkey=https://packages.cloud.google.com/yum/doc/yum-key.gpg
-        https://packages.cloud.google.com/yum/doc/rpm-package-key.gpg
+gpgkey=https://packages.cloud.google.com/yum/doc/yum-key.gpg https://packages.cloud.google.com/yum/doc/rpm-package-key.gpg
+exclude=kubelet kubeadm kubectl
 EOF
-sudo setenforce 0
-sudo yum install -y kubelet kubeadm
-sudo systemctl enable kubelet && systemctl start kubelet
-```
 
-Typically, you would need to install the CNI packages, but they're already installed in this case.
+# Set SELinux in permissive mode (effectively disabling it)
+sudo setenforce 0
+sudo sed -i 's/^SELINUX=enforcing$/SELINUX=permissive/' /etc/selinux/config
+
+sudo yum install -y kubelet kubeadm kubectl --disableexcludes=kubernetes
+
+sudo systemctl enable --now kubelet
+```
 
 # Configure Kubernetes Master
 On the master node, we want to run:
@@ -120,13 +137,30 @@ On the master node, we want to run:
 
 The `--pod-network-cidr=10.244.0.0/16` option is a requirement for Flannel - don't change that network address!
 
-Save the command it gives you to join nodes in the cluster, but we don't want to do that just yet. You should see a message like 
+You should see a message like the following after `kubeadm` successfully initialized the cluster 
 
 ```
+...
 You can now join any number of machines by running the following on each node as root:
 
   kubeadm join --token <token> <IP>:6443
+...
 ```
+
+Copy and run the above command on the worker nodes to join them in the cluster.
+
+If you want to join a node at some time later on, you can use the following script:
+
+```shell
+# If token has expired, create one
+TOKEN=$(kubeadm token create)
+HASH=$(openssl x509 -pubkey -in /etc/kubernetes/pki/ca.crt | openssl rsa -pubin -outform der 2>/dev/null | \
+   openssl dgst -sha256 -hex | sed 's/^.* //')
+kubeadm join --token $TOKEN <control-plane-host>:<control-plane-port> --discovery-token-ca-cert-hash sha256:$HASH
+```
+
+Replace the control plane host and port with yours.
+
 
 Start the cluster as a normal user. This part, I realized, was pretty important as it doesn't like to play well when you do it as root.
 
@@ -164,34 +198,6 @@ If this is the case, you will need to run the RBAC module as well:
 
 ```shell
 kubectl create -f https://raw.githubusercontent.com/coreos/flannel/master/Documentation/kube-flannel-rbac.yml
-```
-
-# Add Worker Nodes to the Cluster
-Upto this point, we haven't really touched the worker nodes (other than installing the prerequisites), but now you can join the worker nodes by running the command that was given to us when we created the cluster
-
-```shell
-sudo kubeadm join --token <token> <ip>:6443
-```
-
-We'll see more services spinning up on other services:
-
-`kubectl get pods --all-namespaces`
-
-```
-NAMESPACE     NAME                                                    READY     STATUS    RESTARTS   AGE
-...
-kube-system   kube-flannel-ds-fldtn                                   0/2       Pending   0          3s
-...
-kube-system   kube-proxy-c8s32                                        0/1       Pending   0          3s
-```
-
-And to confirm, when we do a `kubectl get nodes`, we should see something like:
-
-```
-NAME                            STATUS    AGE       VERSION
-server1                         Ready     46m       v1.7.0
-server2                         Ready     3m        v1.7.0
-server3                         Ready     2m        v1.7.0
 ```
 
 # Running Workloads on the Master Node
