@@ -171,11 +171,28 @@ export KUBECONFIG=$HOME/admin.conf
 ```
 
 ## Install Flannel for the Pod Network (On Master Node)
+### Prerequisites
+When using udp backend, flannel uses UDP port 8285 for sending encapsulated packets.
+
+When using vxlan backend, kernel uses UDP port 8472 for sending encapsulated packets.
+
+Make sure that your firewall rules allow this traffic for all hosts participating in the overlay network.
+
+Make sure that your firewall rules allow traffic from pod network cidr visit your kubernetes master node.
+
+```shell
+sudo firewall-cmd --permanent --add-port=8285/udp
+sudo firewall-cmd --permanent --add-port=8472/udp
+sudo firewall-cmd --add-masquerade --permanent
+```
+
+### Install
 We need to install the pod network before the cluster can come up. As such we want to install the latest yaml file that flannel provides. Most installations will use the following:
 
 ```shell
 kubectl apply -f https://github.com/coreos/flannel/raw/master/Documentation/kube-flannel.yml
 ```
+
 At this point, give it a minute, and have a look at the status of the cluster. run `kubectl get pods --all-namespaces` and see what it comes back with. If everything shows running, then you're in business! Otherwise, if you notice errors like:
 
 ```
@@ -199,6 +216,7 @@ If this is the case, you will need to run the RBAC module as well:
 ```shell
 kubectl create -f https://raw.githubusercontent.com/coreos/flannel/master/Documentation/kube-flannel-rbac.yml
 ```
+
 
 ## Running Workloads on the Master Node
 By default, no workloads will run on the master node. You usually want this in a production environment. In my case, since I'm using it for development and testing, I want to allow containers to run on the master node as well. This is done by a process called "tainting" the host.
@@ -258,4 +276,3 @@ subjects:
 ```
 
 Using this script to generate kubeconfig: https://gist.github.com/tdtrung17693/4f4de6a1558ebd9efbbe3ee804a1ad48
-
