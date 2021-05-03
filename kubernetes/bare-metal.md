@@ -130,7 +130,7 @@ sudo yum install -y kubelet kubeadm kubectl --disableexcludes=kubernetes
 sudo systemctl enable --now kubelet
 ```
 
-# Configure Kubernetes Master
+## Configure Kubernetes Master
 On the master node, we want to run:
 
 `sudo kubeadm init --pod-network-cidr=10.244.0.0/16`
@@ -170,7 +170,7 @@ sudo chown $(id -u):$(id -g) $HOME/admin.conf
 export KUBECONFIG=$HOME/admin.conf
 ```
 
-# Install Flannel for the Pod Network (On Master Node)
+## Install Flannel for the Pod Network (On Master Node)
 We need to install the pod network before the cluster can come up. As such we want to install the latest yaml file that flannel provides. Most installations will use the following:
 
 ```shell
@@ -200,7 +200,62 @@ If this is the case, you will need to run the RBAC module as well:
 kubectl create -f https://raw.githubusercontent.com/coreos/flannel/master/Documentation/kube-flannel-rbac.yml
 ```
 
-# Running Workloads on the Master Node
+## Running Workloads on the Master Node
 By default, no workloads will run on the master node. You usually want this in a production environment. In my case, since I'm using it for development and testing, I want to allow containers to run on the master node as well. This is done by a process called "tainting" the host.
 
 On the master, we can run the command `kubectl taint nodes --all node-role.kubernetes.io/master-` and allow the master to run workloads as well.
+
+## Generate kubeconfig for kubectl
+
+Authorize using RBAC: https://kubernetes.io/docs/reference/access-authn-authz/rbac/
+
+Create a service account
+
+```yaml
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+    name: service-user
+    namespace: default
+```
+
+Create a cluster role
+
+```yaml
+kind: ClusterRole
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  namespace: default
+  name: a-role
+rules:
+- apiGroups:
+  - '*'
+  resources:
+  - '*'
+  verbs:
+  - '*'
+- nonResourceURLs:
+  - '*'
+  verbs:
+  - '*'
+```
+
+This cluster role allows a user to access everything on the cluster, which makes a user a cluster admin. 
+
+```yaml
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: a-role-binding
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: a-role
+subjects:
+- kind: ServiceAccount
+  name: service-user
+  namespace: default
+```
+
+Using this script to generate kubeconfig: https://gist.github.com/tdtrung17693/4f4de6a1558ebd9efbbe3ee804a1ad48
+
