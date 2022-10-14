@@ -1,0 +1,24 @@
+{
+  "posts": {
+    "1": {
+      "id": 1,
+      "title": "lorem ipsum",
+      "content": "abcd",
+      "createdAt": "2022-10-14T15:17:39.032Z",
+      "modifiedAt": null,
+      "path": "/Docker/Re-create_container_from_fresh_images.md",
+      "tags": [
+        "a",
+        "b"
+      ]
+    }
+  },
+  "tags": {
+    "a": [
+      "1"
+    ],
+    "b": [
+      "1"
+    ]
+  }
+}
