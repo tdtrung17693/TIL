@@ -32,7 +32,6 @@ jobs:
       working-directory: scripts/generate-db
     - run: npm run generate
       working-directory: scripts/generate-db
-    - run: npm test
     - name: Add & Commit
     # You may pin to the exact commit or the version.
     # uses: EndBug/add-and-commit@61a88be553afe4206585b31aa72387c64295d08b
