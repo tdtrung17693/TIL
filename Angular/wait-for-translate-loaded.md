@@ -1,3 +1,8 @@
+---
+id: mQFTMwRZ8QPE3voDvLVi88
+---
+
+
 All you need to do (as it was partially mentioned) is to preload translations using `.use()` method. The problem is the method is async (we should wait for the result). The best way to force the application to wait for "something" to finish before it shows up is using `APP_INITIALIZER` function in your AppModule.
 
 You have to add following provider to your AppModule's providers section:

@@ -1,3 +1,8 @@
+---
+id: 52WTLp1sfZdRPLNaC9jn9j
+---
+
+
 # Types of state
 
 5 types:

@@ -1,3 +1,8 @@
+---
+id: 8S4LpPbNvRUCHvXct8PZVS
+---
+
+
 # OOA Steps
 
 1. Locate Nouns

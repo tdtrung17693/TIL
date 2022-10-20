@@ -1,3 +1,8 @@
+---
+id: 22kfPTTuAa1aK1nmZuC558
+---
+
+
 # Cohesion
 
 Degree to which members of a class serve a unifying task or concept

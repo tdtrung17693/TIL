@@ -1,3 +1,8 @@
+---
+id: dBkMerrTYNtnH1x9UxuxwV
+---
+
+
 # Idioms
 
 ## Push value onto stack

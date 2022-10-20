@@ -1,3 +1,8 @@
+---
+id: 1NCP1XsoyLEVWFo39D7w6z
+---
+
+
 # Architecture
 
 * Don't couple delivery mechanism and use cases

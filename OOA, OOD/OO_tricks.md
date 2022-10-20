@@ -1,3 +1,8 @@
+---
+id: qz6QgeL7iMNFLmnjnMg7qz
+---
+
+
 # OO tricks
 
 * Command Query Separation

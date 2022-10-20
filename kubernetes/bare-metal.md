@@ -1,3 +1,8 @@
+---
+id: otFg4EzmddAUmBKCJAj4VU
+---
+
+
 # Deploy a K8s cluster on bare-metal server
 
 ## Letting iptables see bridged traffic

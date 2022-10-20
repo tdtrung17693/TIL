@@ -1,4 +1,10 @@
-# Architectural Design Process
+---
+title: Architectural Design Process
+tags: architecture, engineering
+id: nbFh6W4RSvd9titzRxaXW4
+---
+
+
 
 * Phase 0: _Specify Properties_
     * Construct a context diagram

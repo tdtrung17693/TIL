@@ -1,3 +1,8 @@
+---
+id: kQ3kYk6kYM74sSSuDAwE4M
+---
+
+
 # Coupling
 
 ### Different types of Coupling

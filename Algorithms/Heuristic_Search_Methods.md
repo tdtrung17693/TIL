@@ -1,3 +1,8 @@
+---
+id: kNxLFZfUtR2zX2GFe6Ugmu
+---
+
+
 # Heuristic Search Methods
 
 Two components:

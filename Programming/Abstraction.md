@@ -1,3 +1,8 @@
+---
+id: eFvjN4tsCSH2DWPZwazur5
+---
+
+
 # Abstraction
 
 * The isolation of the abstraction from its users

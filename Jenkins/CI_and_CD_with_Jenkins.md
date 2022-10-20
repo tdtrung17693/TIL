@@ -1,3 +1,8 @@
+---
+id: 6KAZXt2vQA6oQbqwkoMu2N
+---
+
+
 # CI and CD with Jenkins
 
 * Suppose there are 2 server: A for Jenkins and B is Production Server

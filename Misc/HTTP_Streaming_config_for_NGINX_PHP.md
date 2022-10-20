@@ -1,3 +1,8 @@
+---
+id: nH9wWcZZ8w2KawAqSdk1BM
+---
+
+
 # HTTP Streaming config for NGINX with PHP
 
 ```

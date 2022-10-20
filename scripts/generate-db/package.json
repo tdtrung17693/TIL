@@ -1,0 +1,15 @@
+{
+  "name": "generate-db",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "generate": "node index.mjs"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "gray-matter": "^4.0.3",
+    "short-uuid": "^4.2.2"
+  }
+}
