@@ -33,6 +33,7 @@ jobs:
     - run: npm run generate
       working-directory: scripts/generate-db
     - run: cat db.json
+    - run: git status
     - name: GIT Commit 
       # Only run on main branch push (e.g. pull request merge).
       if: github.event_name == 'push'
@@ -41,4 +42,6 @@ jobs:
         git config --global user.email "tdtrung17693@users.noreply.github.com"
         git add -A
         git commit -m "update db.json"
-        git push release --force
+        git checkout release
+        git rebase master
+        git push origin release --force
