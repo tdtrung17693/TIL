@@ -45,3 +45,5 @@ jobs:
         git switch -c release
         git rebase master
         git push origin release --force
+    - name: deploy nuxt site
+      run: curl -X POST https://api.vercel.com/v1/integrations/deploy/prj_ZfNygSP81y2QCmo58GXWQgNShfev/0qG2UlQPvh
