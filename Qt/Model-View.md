@@ -1,6 +1,9 @@
 ---
 id: 3s47XyMtCmQLrA5yQAVfD6
+title: Model-View
 ---
+
+
 
 
 # Model-View

@@ -1,6 +1,9 @@
 ---
 id: 6KAZXt2vQA6oQbqwkoMu2N
+title: CI and CD with Jenkins
 ---
+
+
 
 
 # CI and CD with Jenkins

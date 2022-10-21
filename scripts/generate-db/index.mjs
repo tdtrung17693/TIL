@@ -40,6 +40,7 @@ try {
   };
 }
 
+const addedIds = []
 async function getFileList(dir) {
   let entries = await fs.readdir(dir);
 
@@ -89,6 +90,8 @@ async function getFileList(dir) {
           title: frontMatter.data.title || "no title",
         };
       }
+
+
       /**
        * @type string[]
        */
@@ -108,9 +111,15 @@ async function getFileList(dir) {
           new Set([...currentDb.tags[tag], dbEntry.id])
         );
       });
+      addedIds.push(postId)
     })
   );
 }
+
+// clean deleted ids
+ let deletedIds = Object.keys(currentDb.posts).filter(x => !addedIds.includes(x));
+ deletedIds.forEach(id => delete currentDb.posts[id])
+
 
 function generateFrontMatter(data) {
   const str = Object.keys(data)

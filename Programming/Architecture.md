@@ -1,6 +1,9 @@
 ---
 id: 1NCP1XsoyLEVWFo39D7w6z
+title: Architecture
 ---
+
+
 
 
 # Architecture

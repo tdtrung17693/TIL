@@ -1,6 +1,9 @@
 ---
 id: 2TDBMSvWJ4bQxpqwbvF9vX
+title: Read base64 data and feed it to face_recognition
 ---
+
+
 
 
 # Read base64 data and feed it to face_recognition

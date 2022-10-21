@@ -1,6 +1,9 @@
 ---
 id: otFg4EzmddAUmBKCJAj4VU
+title: Deploy a K8s cluster on bare-metal server
 ---
+
+
 
 
 # Deploy a K8s cluster on bare-metal server

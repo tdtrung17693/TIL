@@ -1,6 +1,9 @@
 ---
 id: dtvu6UpbSrEvVezCRDtp8K
+title: DOM Events
 ---
+
+
 
 
 # DOM Events

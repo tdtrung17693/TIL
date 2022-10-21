@@ -1,6 +1,9 @@
 ---
 id: vP93nC6Zrszb9pqZ68NR1a
+title: Flowtype and Vim
 ---
+
+
 
 
 # Flowtype and Vim

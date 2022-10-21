@@ -1,6 +1,9 @@
 ---
 id: eFvjN4tsCSH2DWPZwazur5
+title: Abstraction
 ---
+
+
 
 
 # Abstraction

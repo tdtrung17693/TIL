@@ -1,6 +1,9 @@
 ---
 id: uuhMDMgGSgh8EzauJaSFok
+title: Domain-driven Design
 ---
+
+
 
 
 # Domain-driven Design

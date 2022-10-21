@@ -1,6 +1,9 @@
 ---
 id: 5qzWen2Q8t7sYWFSYVwWiK
+title: setTimeout &amp; setInterval
 ---
+
+
 
 
 # setTimeout & setInterval

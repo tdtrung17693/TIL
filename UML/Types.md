@@ -1,6 +1,9 @@
 ---
 id: iEP2JfaXrKoM1xukHYXUK9
+title: Types
 ---
+
+
 
 
 # Types

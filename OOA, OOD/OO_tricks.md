@@ -1,6 +1,9 @@
 ---
 id: qz6QgeL7iMNFLmnjnMg7qz
+title: OO tricks
 ---
+
+
 
 
 # OO tricks

@@ -1,6 +1,9 @@
 ---
 id: 52WTLp1sfZdRPLNaC9jn9j
+title: Types of state
 ---
+
+
 
 
 # Types of state

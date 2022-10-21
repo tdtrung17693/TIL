@@ -1,6 +1,9 @@
 ---
 id: kNxLFZfUtR2zX2GFe6Ugmu
+title: Heuristic Search Methods
 ---
+
+
 
 
 # Heuristic Search Methods
