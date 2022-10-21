@@ -86,9 +86,8 @@ async function getFileList(dir) {
           createdAt: stat.ctime,
           modifiedAt: null,
           id: postId,
-          title: frontMatter.data.title || "no title"
+          title: frontMatter.data.title || "no title",
         };
-        currentDb.posts[postId] = dbEntry;
       }
       /**
        * @type string[]
@@ -98,6 +97,8 @@ async function getFileList(dir) {
         .filter((t) => t.length > 0)
         .map((t) => t.trim());
 
+      dbEntry.tags = entryTags;
+      currentDb.posts[postId] = dbEntry;
       entryTags.forEach((tag) => {
         if (!currentDb.tags[tag]) {
           currentDb.tags[tag] = [];
