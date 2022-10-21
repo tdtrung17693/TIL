@@ -40,7 +40,7 @@ try {
   };
 }
 
-const addedIds = []
+const addedIds = [];
 async function getFileList(dir) {
   let entries = await fs.readdir(dir);
 
@@ -91,7 +91,6 @@ async function getFileList(dir) {
         };
       }
 
-
       /**
        * @type string[]
        */
@@ -100,6 +99,7 @@ async function getFileList(dir) {
         .filter((t) => t.length > 0)
         .map((t) => t.trim());
 
+      entryTags.push("til");
       dbEntry.tags = entryTags;
       currentDb.posts[postId] = dbEntry;
       entryTags.forEach((tag) => {
@@ -111,15 +111,16 @@ async function getFileList(dir) {
           new Set([...currentDb.tags[tag], dbEntry.id])
         );
       });
-      addedIds.push(postId)
+      addedIds.push(postId);
     })
   );
 }
 
 // clean deleted ids
- let deletedIds = Object.keys(currentDb.posts).filter(x => !addedIds.includes(x));
- deletedIds.forEach(id => delete currentDb.posts[id])
-
+let deletedIds = Object.keys(currentDb.posts).filter(
+  (x) => !addedIds.includes(x)
+);
+deletedIds.forEach((id) => delete currentDb.posts[id]);
 
 function generateFrontMatter(data) {
   const str = Object.keys(data)
